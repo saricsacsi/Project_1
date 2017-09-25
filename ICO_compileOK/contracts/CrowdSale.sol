@@ -1,7 +1,7 @@
 pragma solidity ^0.4.11;
 
-import '../token/MintableToken.sol';
-import '../math/SafeMath.sol';
+import './VickyToken.sol';
+import './SafeMath.sol';
 
 /**
  * @title Crowdsale
@@ -15,7 +15,7 @@ contract Crowdsale {
   using SafeMath for uint256;
 
   // The token being sold
-  MintableToken public token;
+  VickyToken public token;
 
   // start and end timestamps where investments are allowed (both inclusive)
   uint256 public startTime;
@@ -55,8 +55,8 @@ contract Crowdsale {
 
   // creates the token to be sold.
   // override this method to have crowdsale of a specific mintable token.
-  function createTokenContract() internal returns (MintableToken) {
-    return new MintableToken();
+  function createTokenContract() internal returns (VickyToken) {
+    return new VickyToken();
   }
 
 
@@ -78,7 +78,7 @@ contract Crowdsale {
     // update state
     weiRaised = weiRaised.add(weiAmount);
 
-    token.mint(beneficiary, tokens);
+    //token.mint(beneficiary, tokens);
     TokenPurchase(msg.sender, beneficiary, weiAmount, tokens);
 
     forwardFunds();
