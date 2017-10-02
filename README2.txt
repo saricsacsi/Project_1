@@ -7,7 +7,7 @@ Aim and plan:
 - use multisig wallet  / because i dont access from here parity I need to guess how can i create a new multisig wallet with other method)
 
 
-- distribution	
+- distribution	/splitter
 
 summary
 
