@@ -2,14 +2,16 @@
 Aim and plan:
 - create an ERC20 contract done
 
-- presale  xx V1 is on the process xx
+- presale  xx V1 is on the process xx - no compile 
 
 - public sale (crowdsale) done (need to check, but its on the ropsten)
 
 - use multisig wallet  / because i dont access from here parity I need to guess how can i create a new multisig wallet with other method)
 
 
-- distribution	/splitter
+- distribution	/splitter  - spit to the tokent holders, without check the  remaining 
+			   - missing the fix -rate splitter
+
 
 
 
