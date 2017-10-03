@@ -22,7 +22,7 @@ contract ReporterToken is StandardToken, {
   /**
    * @dev Constructor that gives msg.sender all of existing tokens.
    */
-  function VickyToken() {
+  function ReporterToken() {
     totalSupply = INITIAL_SUPPLY;
     balances[msg.sender] = INITIAL_SUPPLY;
   }

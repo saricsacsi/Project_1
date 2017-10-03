@@ -1,7 +1,8 @@
 pragma solidity ^0.4.11;
 
-import './ReporterToken.sol';
+import './RepToken.sol';
 import './SafeMath.sol';
+import './Ownable.sol';
 
 
 
@@ -62,15 +63,17 @@ contract Pausable is Ownable {
  * on a token per ETH rate. Funds collected are forwarded to a wallet
  * as they arrive.
  */
-contract Presale is Pausable{
+contract Presale is Ownable,Pausable{
   using SafeMath for uint256;
 
-  // The token being sold
-  VickyToken public token;  // ide jön a token address
+ 
+  bool public freeForAll = true;    // The token being sold
+  bool    public saleFinished;
+  RepToken public token;  // ide jön a token address
 
   // start and end timestamps where investments are allowed (both inclusive)
   uint256 public startTime;
-  uint256 public endTime;
+  uint256 public stopTime;
 
   // address where funds are collected
   address public wallet;  // majd ide jön a multisig wallett cím
@@ -139,23 +142,23 @@ contract Presale is Pausable{
   event TokenPurchase(address indexed purchaser, address indexed beneficiary, uint256 value, uint256 amount);
 
 
-  function Presale(uint256 _startTime, uint256 _endTime, uint256 _rate, address _wallet) {
+  function Presale(uint256 _startTime, uint256 _stopTime, uint256 _rate, address _wallet) {
     require(_startTime >= now);
-    require(_endTime >= _startTime);
+    require(_stopTime >= _startTime);
     require(_rate > 0);
     require(_wallet != 0x0);
 
     token = createTokenContract();  // ha meglévő token addresse kerül be akkor ez as or nem kell talán
     startTime = _startTime;
-    endTime = _endTime;
+    stopTime = _stopTime;
     rate = _rate;
     wallet = _wallet;
   }
 
   // creates the token to be sold.
   // override this method to have crowdsale of a specific mintable token.
-  function createTokenContract() internal returns (VickyToken) {
-    return new ReporterToken();
+  function createTokenContract() internal returns (RepToken) {
+    return new RepToken();
   }
 
 
@@ -191,14 +194,14 @@ contract Presale is Pausable{
 
   // @return true if the transaction can buy tokens
   function validPurchase() internal constant returns (bool) {
-    bool withinPeriod = now >= startTime && now <= endTime;
+    bool withinPeriod = now >= startTime && now <= stopTime;
     bool nonZeroPurchase = msg.value != 0;
     return withinPeriod && nonZeroPurchase;
   }
 
   // @return true if crowdsale event has ended
   function hasEnded() public constant returns (bool) {
-    return now > endTime;
+    return now > stopTime;
   }
 
 
